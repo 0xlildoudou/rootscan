@@ -1517,8 +1517,8 @@ web () {
 				if [[ "$line" =~ http|https ]] && [[ ! "$line" =~ ncacn_http ]] && [[ "$port" != "5985" && "$port" != "5986" && "$port" != "5357" ]]; then
 					echo $line
 					whatweb ${ip}:${port} --log-brief=/tmp/whatweb >/dev/null 2>&1
-					HTTPServer=$(cat /tmp/whatweb | grep -oP 'HTTPServer\[\K[^\]]+')
-					Title=$(cat /tmp/whatweb | grep -oP 'Title\[\K[^\]]+' || echo "No title identified")
+					HTTPServer=$(cat /tmp/whatweb | tail -n 1 | grep -oP 'HTTPServer\[\K[^\]]+' || echo "No HTTPServer identified")
+					Title=$(cat /tmp/whatweb | tail -n 1 | grep -oP 'Title\[\K[^\]]+' || echo "No title identified")
 					green_log "${SPACE}${ip}:${port} (${hostname}) -> ${HTTPServer} /// ${Title}"
 				  	rm /tmp/whatweb
 				fi
